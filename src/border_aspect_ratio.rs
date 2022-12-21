@@ -9,8 +9,10 @@ where
     pub marker: T,
 }
 
+#[derive(Resource)]
 struct BorderColor(Color);
 
+#[derive(Resource)]
 struct BorderMarker<T>(T)
 where
     T: Component + Copy + Clone;
@@ -32,88 +34,97 @@ where
     T: Component + Copy + Clone,
 {
     commands
-        .spawn_bundle(NodeBundle {
-            style: Style {
-                size: Size::new(Val::Percent(100.), Val::Percent(100.)),
+        .spawn((
+            NodeBundle {
+                style: Style {
+                    size: Size::new(Val::Percent(100.), Val::Percent(100.)),
+                    ..Default::default()
+                },
+                background_color: Color::NONE.into(),
                 ..Default::default()
             },
-            color: Color::NONE.into(),
-            ..Default::default()
-        })
-        .insert(marker.0)
+            marker.0,
+        ))
         .with_children(|parent| {
-            parent
-                .spawn_bundle(NodeBundle {
+            parent.spawn((
+                NodeBundle {
                     style: Style {
                         size: Size::new(Val::Auto, Val::Percent(100.)),
                         flex_grow: 1.,
                         ..Default::default()
                     },
-                    color: color.0.into(),
+                    background_color: color.0.into(),
                     ..Default::default()
-                })
-                .insert(marker.0);
+                },
+                marker.0,
+            ));
 
             parent
-                .spawn_bundle(NodeBundle {
-                    style: Style {
-                        size: Size::new(Val::Auto, Val::Percent(100.)),
-                        flex_direction: FlexDirection::Column,
+                .spawn((
+                    NodeBundle {
+                        style: Style {
+                            size: Size::new(Val::Auto, Val::Percent(100.)),
+                            flex_direction: FlexDirection::Column,
+                            ..Default::default()
+                        },
+                        background_color: Color::NONE.into(),
                         ..Default::default()
                     },
-                    color: Color::NONE.into(),
-                    ..Default::default()
-                })
-                .insert(marker.0)
+                    marker.0,
+                ))
                 .with_children(|parent| {
-                    parent
-                        .spawn_bundle(NodeBundle {
+                    parent.spawn((
+                        NodeBundle {
                             style: Style {
                                 size: Size::new(Val::Percent(100.), Val::Auto),
                                 flex_grow: 1.,
                                 ..Default::default()
                             },
-                            color: color.0.into(),
+                            background_color: color.0.into(),
                             ..Default::default()
-                        })
-                        .insert(marker.0);
+                        },
+                        marker.0,
+                    ));
 
-                    parent
-                        .spawn_bundle(NodeBundle {
+                    parent.spawn((
+                        NodeBundle {
                             style: Style {
                                 size: Size::new(Val::Auto, Val::Auto),
                                 ..Default::default()
                             },
-                            color: Color::NONE.into(),
+                            background_color: Color::NONE.into(),
                             ..Default::default()
-                        })
-                        .insert(VisibleArea)
-                        .insert(marker.0);
+                        },
+                        VisibleArea,
+                        marker.0,
+                    ));
 
-                    parent
-                        .spawn_bundle(NodeBundle {
+                    parent.spawn((
+                        NodeBundle {
                             style: Style {
                                 size: Size::new(Val::Percent(100.), Val::Auto),
                                 flex_grow: 1.,
                                 ..Default::default()
                             },
-                            color: color.0.into(),
+                            background_color: color.0.into(),
                             ..Default::default()
-                        })
-                        .insert(marker.0);
+                        },
+                        marker.0,
+                    ));
                 });
 
-            parent
-                .spawn_bundle(NodeBundle {
+            parent.spawn((
+                NodeBundle {
                     style: Style {
                         size: Size::new(Val::Auto, Val::Percent(100.)),
                         flex_grow: 1.,
                         ..Default::default()
                     },
-                    color: color.0.into(),
+                    background_color: color.0.into(),
                     ..Default::default()
-                })
-                .insert(marker.0);
+                },
+                marker.0,
+            ));
         });
 }
 
